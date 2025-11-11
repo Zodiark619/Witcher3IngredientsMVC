@@ -12,6 +12,8 @@ namespace Witcher3IngredientsMVC.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemLink> ItemLinks { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<RecipeRequirement> RecipeRequirements { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -21,6 +23,17 @@ namespace Witcher3IngredientsMVC.Data
          .WithMany() // no back navigation from Item
          .HasForeignKey(il => il.ResultItemId)
          .OnDelete(DeleteBehavior.Restrict);
+
+            /////////////////////
+            ///
+            modelBuilder.Entity<RecipeRequirement>()
+        .HasKey(rr => new { rr.RecipeId, rr.ItemId });
+
+            modelBuilder.Entity<RecipeRequirement>()
+                .HasOne(rr => rr.Recipe)
+                .WithMany(r => r.Requirements)
+                .HasForeignKey(rr => rr.RecipeId);
+
         }
     }
 }

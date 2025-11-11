@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@inject UserManager<IdentityUser> UserManager
+@* @if (User.Identity.IsAuthenticated) @if (User.IsInRole("SuperAdmin"))*@  
+@model List<Recipe>
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="mb-2">
+        <a class="btn btn-primary" asp-action="Add">Add Item</a>
+
+    </div>
+}
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Requirements</th>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            var item = i.Requirements.Select(l => l.Item.Name+" x"+l.Quantity);
+            <tr>
+                <td>@i.Id</td>
+                <td>@i.Name</td>
+                <td>
+                    <ul class="mb-0">
+                @foreach (var req in i.Requirements)
+                {
+                            <li>@req.Item.Name ×@req.Quantity</li>
+                }
+                        </ul>
+                </td>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@i.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+                @* <td>@string.Join(", ", item) </td> *@
+@section Scripts {
+    <script>
+        let table = new DataTable('#myTable');
+    </script>
+}
