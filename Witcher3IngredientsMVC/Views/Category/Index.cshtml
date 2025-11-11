@@ -1,0 +1,28 @@
+﻿@model List<Category>
+<div class="mb-2">
+    <a class="btn btn-primary" asp-action="Add">Add Category</a>
+
+</div>
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+        <th>Id</th>
+        <th>Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var i in Model)
+        {
+            <tr>
+                <td>@i.Id</td>
+                <td>@i.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+<script>
+    let table = new DataTable('#myTable');
+</script>
+}

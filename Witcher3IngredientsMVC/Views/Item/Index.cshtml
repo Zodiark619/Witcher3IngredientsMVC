@@ -1,0 +1,36 @@
+﻿@model List<Item>
+<div class="mb-2">
+    <a class="btn btn-primary" asp-action="Add">Add Item</a>
+
+</div>
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Dismantle to</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>@i.Id</td>
+                <td>@i.Name</td>
+                <td>@i.Category.Name</td>
+                <td>@string.Join(", ", i.DismantleIntoLinks.Select(l => l.ResultItem.Name))</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@i.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        let table = new DataTable('#myTable');
+    </script>
+}
