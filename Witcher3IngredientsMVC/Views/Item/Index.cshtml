@@ -1,8 +1,16 @@
-﻿@model List<Item>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@inject UserManager<IdentityUser> UserManager
+@* @if (User.Identity.IsAuthenticated) @if (User.IsInRole("SuperAdmin"))*@  
+@model List<Item>
+@if (SignInManager.IsSignedIn(User))
+    {
 <div class="mb-2">
     <a class="btn btn-primary" asp-action="Add">Add Item</a>
 
 </div>
+    }
 <table class="table" id="myTable">
     <thead>
         <tr>
@@ -10,7 +18,10 @@
             <th>Name</th>
             <th>Category</th>
             <th>Dismantle to</th>
+            @if (SignInManager.IsSignedIn(User))
+    {
             <th></th>
+    }
         </tr>
     </thead>
     <tbody>
@@ -21,10 +32,13 @@
                 <td>@i.Name</td>
                 <td>@i.Category.Name</td>
                 <td>@string.Join(", ", i.DismantleIntoLinks.Select(l => l.ResultItem.Name))</td>
+    @if (SignInManager.IsSignedIn(User))
+    {
                 <td>
                     <a asp-action="Edit" asp-route-id="@i.Id">Edit</a>
                     <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
                 </td>
+    }
             </tr>
         }
     </tbody>

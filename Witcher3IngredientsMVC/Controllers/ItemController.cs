@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -25,8 +26,8 @@ namespace Witcher3IngredientsMVC.Controllers
        .ToListAsync();
             return View(items);
         }
-
-            public async Task<IActionResult> AddAsync()
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> AddAsync()
             {
             var viewModel = new ItemUpsertViewModel
             {
@@ -42,6 +43,7 @@ namespace Witcher3IngredientsMVC.Controllers
 
             return View("Edit", viewModel);
         }
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Edit(int id)
         {
             var item = dbContext.Items.Include(x => x.DismantleIntoLinks).FirstOrDefault(x => x.Id == id);
@@ -68,6 +70,7 @@ namespace Witcher3IngredientsMVC.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> Edit(ItemUpsertViewModel viewmodel)
         {
@@ -141,7 +144,7 @@ namespace Witcher3IngredientsMVC.Controllers
             return RedirectToAction("Index");
         }
 
-      
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(int id)
         {
             var item = await dbContext.Items

@@ -1,14 +1,21 @@
-﻿@model List<Category>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@inject UserManager<IdentityUser> UserManager
+@model List<Category>
+@if (SignInManager.IsSignedIn(User))
+    {
 <div class="mb-2">
     <a class="btn btn-primary" asp-action="Add">Add Category</a>
 
 </div>
+    }
 <table class="table" id="myTable">
     <thead>
         <tr>
         <th>Id</th>
         <th>Name</th>
-
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -17,6 +24,13 @@
             <tr>
                 <td>@i.Id</td>
                 <td>@i.Name</td>
+    @if (SignInManager.IsSignedIn(User))
+    {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@i.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
+                </td>
+    }
             </tr>
         }
     </tbody>
