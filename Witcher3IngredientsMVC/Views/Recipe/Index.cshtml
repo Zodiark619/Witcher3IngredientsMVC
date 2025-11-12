@@ -17,10 +17,8 @@
             <th>Id</th>
             <th>Name</th>
             <th>Requirements</th>
-            @if (SignInManager.IsSignedIn(User))
-            {
                 <th></th>
-            }
+            
         </tr>
     </thead>
     <tbody>
@@ -38,13 +36,13 @@
                 }
                         </ul>
                 </td>
+                    <td>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <td>
                         <a asp-action="Edit" asp-route-id="@i.Id">Edit</a>
                         <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
-                    </td>
                 }
+                    </td>
             </tr>
         }
     </tbody>
